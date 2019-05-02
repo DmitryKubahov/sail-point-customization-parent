@@ -11,7 +11,7 @@
 
     <modules>
         <module>sail-point-customization</module>
-        <module>ssd</module>
+        <module>ssb</module>
     </modules>
 
 
@@ -20,6 +20,13 @@
         <improved.version>0.1.2</improved.version>
         <!-- IdentityIQ dependencies -->
         <identityiq.version>7.3.p2</identityiq.version>
+
+        <!-- SSB paths -->
+        <!-- path to ssb directory -->
+        <ssb.path>ssb</ssb.path>
+        <ssb.build.path>${ssb.path}/build</ssb.build.path>
+        <ssb.config.path>${ssb.path}/config</ssb.config.path>
+        <ssb.rules.path>${ssb.config.path}/Rule</ssb.rules.path>
 
         <!-- JAVA version compiler -->
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -189,11 +196,11 @@
                     <filesets>
                         <!-- Build directory-->
                         <fileset>
-                            <directory>${basedir}/ssd/build</directory>
+                            <directory>${ssb.build.path}</directory>
                         </fileset>
                         <!-- Generated rules -->
                         <fileset>
-                            <directory>${basedir}/ssd/config/Rule</directory>
+                            <directory>${ssb.rules.path}</directory>
                             <includes>
                                 <include>*.xml</include>
                             </includes>

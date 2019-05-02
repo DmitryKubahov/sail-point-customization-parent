@@ -23,7 +23,7 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <compilerArgs>
-                        <arg>-AgenerationPath=ssd/config/</arg>
+                        <arg>-AgenerationPath=${ssb.config.path}/</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
