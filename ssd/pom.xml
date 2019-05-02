@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sail-point-customization-parent</artifactId>
+        <groupId>com.sailpoint</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sailpoint.build</groupId>
+    <artifactId>ssb</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Skip building war of identityiq flag. Default = true. To build it use profile 'war' -->
+        <war.building.skip>true</war.building.skip>
+        <!-- Default sail point target  -->
+        <sail.point.target>debug</sail.point.target>
+        <!-- Path to custom jars -->
+        <ssb.custom.jar.path>${basedir}/web/WEB-INF/lib</ssb.custom.jar.path>
+        <ssb.classes.path>${basedir}/web/WEB-INF/classes</ssb.classes.path>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>war</id>
+            <properties>
+                <sail.point.target>sandbox</sail.point.target>
+                <war.building.skip>false</war.building.skip>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <!-- Clean all customization and improved jars, iiqCustomBeans.xml -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven.clean.plugin.version}</version>
+                <configuration>
+                    <filesets>
+                        <!-- Improved and custom jars -->
+                        <fileset>
+                            <directory>${ssb.custom.jar.path}</directory>
+                            <includes>
+                                <include>sail-point-annotation*.jar</include>
+                                <include>sail-point-improved*.jar</include>
+                                <include>sail-point-customization*.jar</include>
+                            </includes>
+                        </fileset>
+                        <!-- iiqCustomBeans.xml -->
+                        <fileset>
+                            <directory>${ssb.classes.path}</directory>
+                            <includes>
+                                <include>iiqCustomBeans.xml</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- Copy all improved jars:
+
+            - sail-point-annotation.jar
+            - sail-point-improved.jar
+            - sail-point-customization.jar
+
+            TO SSB custom jar folder (ssb/web/WEB_INF/lib) to include them to war.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <!-- Improved annotations -->
+                        <artifactItem>
+                            <groupId>com.sailpoint</groupId>
+                            <artifactId>sail-point-annotation</artifactId>
+                            <version>${improved.version}</version>
+                            <outputDirectory>${ssb.custom.jar.path}</outputDirectory>
+                        </artifactItem>
+                        <!-- Improved -->
+                        <artifactItem>
+                            <groupId>com.sailpoint</groupId>
+                            <artifactId>sail-point-improved</artifactId>
+                            <version>${improved.version}</version>
+                            <outputDirectory>${ssb.custom.jar.path}</outputDirectory>
+                        </artifactItem>
+                        <!-- Customization -->
+                        <artifactItem>
+                            <groupId>com.sailpoint</groupId>
+                            <artifactId>sail-point-customization</artifactId>
+                            <version>${project.version}</version>
+                            <outputDirectory>${ssb.custom.jar.path}</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+
+            <!-- Copy iiqCustomBeans.xml to web/WEB-INF/classes -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${ssb.classes.path}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}</directory>
+                                    <includes>
+                                        <include>iiqCustomBeans.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Run ant task for building identityiq.war -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${war.building.skip}</skip>
+                            <environmentVariables>
+                                <SPTARGET>${sail.point.target}</SPTARGET>
+                            </environmentVariables>
+                            <executable>ant</executable>
+                            <workingDirectory>${basedir}</workingDirectory>
+                            <arguments>
+                                <argument>main</argument>
+                                <argument>war</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

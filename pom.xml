@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sailpoint</groupId>
+    <artifactId>sail-point-customization-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>sail-point-customization</module>
+        <module>ssd</module>
+    </modules>
+
+
+    <properties>
+        <!-- Improved version -->
+        <improved.version>0.1.2</improved.version>
+        <!-- IdentityIQ dependencies -->
+        <identityiq.version>7.3.p2</identityiq.version>
+
+        <!-- JAVA version compiler -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
+        <maven.versions.plugin>2.7</maven.versions.plugin>
+        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+        <exec.maven.plugin.version>1.6.0</exec.maven.plugin.version>
+
+        <!-- SAP j connection version -->
+        <sap.jconnection.version>3.0.14</sap.jconnection.version>
+
+        <!-- Lombok version -->
+        <lombok.version>1.18.6</lombok.version>
+
+        <!-- slf4j api version -->
+        <slf4j.api.version>1.7.25</slf4j.api.version>
+        <!-- Log4j -->
+        <log4j.version>1.2.17</log4j.version>
+
+        <!-- Test dependencies -->
+        <jmockit.version>1.46</jmockit.version>
+        <mockito.version>2.27.0</mockito.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <!-- Additional repositories -->
+    <repositories>
+        <!--Repository for sap -->
+        <repository>
+            <id>mit</id>
+            <name>maven_mit</name>
+            <url>http://maven.mit.edu/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- All improved dependencies -->
+            <!-- Improved annotations -->
+            <dependency>
+                <groupId>com.sailpoint</groupId>
+                <artifactId>sail-point-annotation</artifactId>
+                <version>${improved.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- Improved annotation-processor -->
+            <dependency>
+                <groupId>com.sailpoint</groupId>
+                <artifactId>sail-point-annotation-processor</artifactId>
+                <version>${improved.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- Improved -->
+            <dependency>
+                <groupId>com.sailpoint</groupId>
+                <artifactId>sail-point-improved</artifactId>
+                <version>${improved.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- IdentityIQ dependencies -->
+        <!-- IdentityIq 7.3 -->
+        <dependency>
+            <groupId>com.sailpoint</groupId>
+            <artifactId>identityiq</artifactId>
+            <version>${identityiq.version}</version>
+        </dependency>
+        <!-- IdentityIq 7.3 connector bundle -->
+        <dependency>
+            <groupId>com.sailpoint</groupId>
+            <artifactId>connector-bundle</artifactId>
+            <version>${identityiq.version}</version>
+        </dependency>
+
+        <!-- All improved dependencies -->
+        <!-- Improved annotations -->
+        <dependency>
+            <groupId>com.sailpoint</groupId>
+            <artifactId>sail-point-annotation</artifactId>
+        </dependency>
+        <!-- Improved annotation-processor -->
+        <dependency>
+            <groupId>com.sailpoint</groupId>
+            <artifactId>sail-point-annotation-processor</artifactId>
+        </dependency>
+        <!-- Improved -->
+        <dependency>
+            <groupId>com.sailpoint</groupId>
+            <artifactId>sail-point-improved</artifactId>
+        </dependency>
+
+        <!-- Slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Lombok version -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Sap jconnection -->
+        <dependency>
+            <groupId>com.sap.conn.jco</groupId>
+            <artifactId>sapjco3</artifactId>
+            <version>${sap.jconnection.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Jmockit -->
+        <dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>${jmockit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- junit 4.12 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Clean all generated folders -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven.clean.plugin.version}</version>
+                <configuration>
+                    <filesets>
+                        <!-- Build directory-->
+                        <fileset>
+                            <directory>${basedir}/ssd/build</directory>
+                        </fileset>
+                        <!-- Generated rules -->
+                        <fileset>
+                            <directory>${basedir}/ssd/config/Rule</directory>
+                            <includes>
+                                <include>*.xml</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <!-- Enable JMock for mocking static methods -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
+                    </argLine>
+                </configuration>
+            </plugin>
+            <!-- Enable version plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${maven.versions.plugin}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
