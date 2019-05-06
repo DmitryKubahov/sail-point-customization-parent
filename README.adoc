@@ -11,13 +11,13 @@ The main idea of this project: *auto-generation* xml objects from java classes. 
 
 *+*
 
-. Sources are java classes - use _standard_ helpers (sonarLint, checkStyles, reformatting codes, etc) for writing *good* code and avoid *dump* errors
+. Sources are java classes - use _standard_ helpers (sonarLint, checkStyles, reformatting codes, etc) for writing *good* code and avoid *dumb* errors
 . Writing tests (use junit, mockito, jmockit)
 . Statistics of code - tests coverage, duplications, etc.
 . OOP
 . Debugging of execution
 
-As for cons: there is only 1 - need to redeploy, but using {hot-swap-agent-url} can minimize (or completely) it.
+As for cons: there is only 1 - need to redeploy, but using {hot-swap-agent-url} can minimize (or completely remove) it.
 
 = Description
 
@@ -69,10 +69,9 @@ After these steps project will be ready for building.
 .. *sail-point-annotation* - only annotations for auto generating xmls
 .. *sail-point-annotation-processor* - annotation processors for xml generating
 .. *sail-point-improved* - implementation of SailPoint objects
-.. *sail-point-improved* - implementation of SailPoint object
 .. *2 poms*: sail-point-annotation-parent and sail-point-improved-parent projects
 
-. Download identityiq.jar and cinnection-bundle.jar from identityiq.zip file. These files can be found in identityiq,war from {sail-point-compass-site} site.
+. Download identityiq.jar and connection-bundle.jar from identityiq.zip file. These files can be found in identityiq,war from {sail-point-compass-site} site.
 
 . *Copy* all these files to project`s directory: *bin*
 . *Run* identity_iq_improved_local_mvn.sh in bin directory. This script adds all extra jars to local maven repository
