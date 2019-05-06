@@ -1,0 +1,125 @@
+:sail-point-improved-project-git-hub: https://github.com/DmitryKubahov/sail-point-improved[SailPoint-improved]
+:extra-libs-url: https://github.com/DmitryKubahov/sail-point-customization-parent/releases/download/v1.0.0/extra-libs.zip[extra-libs]
+:sail-point-compass-site: http://community.sailpoint.com[SailPoint Compass]
+:hot-swap-agent-url: http://hotswapagent.org/[HotSwapAgent]
+
+= SailPoint customization
+:toc:
+
+= Idea
+The main idea of this project: *auto-generation* xml objects from java classes. Let see pros&cons:
+
+*+*
+
+. Sources are java classes - use _standard_ helpers (sonarLint, checkStyles, reformatting codes, etc) for writing *good* code and avoid *dump* errors
+. Writing tests (use junit, mockito, jmockit)
+. Statistics of code - tests coverage, duplications, etc.
+. OOP
+. Debugging of execution
+
+As for cons: there is only 1 - need to redeploy, but using {hot-swap-agent-url} can minimize (or completely) it.
+
+= Description
+
+Project used as an example of using auto-generation xml from java classes.
+
+At the current moment implementation covers:
+
+* [ ] *Rules*
+** [*] *Connector rules*:
+*** [*] PreIterate
+*** [*] BuildMap
+*** [*] JDBCBuildMap
+*** [*] SAPBuildMap
+*** [*] SAPHRManagerRule
+*** [*] PeopleSoftHRMSBuildMap
+*** [*] FileParsingRule
+*** [*] MergeMaps
+*** [*] Transformation
+*** [*] PostIterate
+*** [*] WebServiceBeforeOperationRule
+*** [*] WebServiceAfterOperationRule
+*** [*] RACFPermissionCustomization
+
+** [ ] *Certification rules*:
+** [*] IdentityTrigger
+
+Follow {sail-point-improved-project-git-hub} for getting new implementations.
+
+= Structure
+Project contains 2 modules:
+
+. *sail-point-customization* - main project. Contains all classes for SailPoint objects
+. *ssb* - SSB project for building identity.war
+
+IMPORTANT: SSB project must be configured by developers needs: version of identity, paths, etc.
+
+= Starting
+
+Before stating using this project need to do 2 manual jobs:
+
+. *add custom dependencies* to local maven repository. Follow these steps:
+. *extract SSB project*
+
+After these steps project will be ready for building.
+
+== Adding custom libs
+
+. Download {extra-libs-url}. This archive contains following jars:
+.. *sail-point-annotation* - only annotations for auto generating xmls
+.. *sail-point-annotation-processor* - annotation processors for xml generating
+.. *sail-point-improved* - implementation of SailPoint objects
+.. *sail-point-improved* - implementation of SailPoint object
+.. *2 poms*: sail-point-annotation-parent and sail-point-improved-parent projects
+
+. Download identityiq.jar and cinnection-bundle.jar from identityiq.zip file. These files can be found in identityiq,war from {sail-point-compass-site} site.
+
+. *Copy* all these files to project`s directory: *bin*
+. *Run* identity_iq_improved_local_mvn.sh in bin directory. This script adds all extra jars to local maven repository
+
+== Extract SSB project
+
+. *Download SSB* archive from {sail-point-compass-site} site
+. *Extract* it to *ssb* module
+
+= Example
+
+As for implementation this project contains only connections rules without specific logic. This is just example of *how it works*.
+
+*sail-point-customization* via annotation-processors generate xml from java classes (only rules right now) to ssb/config/Rule. It can be customized via pom.xml in *sail-point-customization* - attribute: *generationPath*
+
+*ssb* project contains only 3 files:
+
+. *.gitignore* - to ignore all files in ssb\
+. *iiqCustomBeans.xml* - spring beans configuration files for overriding 'ruleRunner' bean.
+. *pom.xml* - maven project model
+
+For building identity.war use 'war' maven profile
+----
+mvn clean install -Pwar
+----
+
+== Building steps
+
+. *clean* - clean default maven projects directory and:
+.. *ssb/config/Rule* - remove all xml from it (can be configured in main pom)
+.. *ssb/build* - clean build identity folder (can be configured in main pom)
+.. *delete* improved and customization libs from *ssb/web/WEB-INF/lib* (can be configured in *ssb* module pom)
+... *sail-point-annotation*
+... *sail-point-improved*
+... *sail-point-customization*
+.. *delete* spring beans configuration file (*iiqCustomBeans.xml*) from *ssb/web/WEB-INF/classes* (can be configured in *ssb* module pom)
+
+. *install* - generates xmls for rules, installs jars to local repository, runs ant task to build war in *ssb* project.
+.. *sail-point-customization*
+... generate xml for rule to *ssb/config/Rule* (can be configured in *sail-point-customization* projects pom)
+... install sail-point-customization jar to local maven repository
+.. *ssb*
+... *copy* improved and customization jars to *ssb/web/WEB-INF/lib* (can be configured in *ssb* module pom)
+... *copy* spring beans configuration file (*iiqCustomBeans.xml*) to *ssb/web/WEB-INF/classes* (can be configured in *ssb* module pom)
+... *execute*
++
+----
+ant main war
+----
+in *ssb* project (can be configured in *ssb* module pom)
